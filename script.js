@@ -10,14 +10,25 @@ function reverseString2(toReverse) { // recursive
     return toReverse[len - 1] + reverseString2(toReverse.substring(0,  len-1));
 }
 
-function reverseString3(toReverse) {
+function reverseString3(toReverse) { // iterative #1
     let newString = '';
     for (let idx = toReverse.length - 1; idx >= 0; --idx) {
         newString += toReverse[idx];
     }
-    return newString
+    return newString;
 }
 
-console.log(reverseString1("123"));
-console.log(reverseString2("123"));
-console.log(reverseString3("123"));
+function reverseString4(toReverse) {
+    let newString = '';
+    for (let ch of toReverse) {
+        newString = ch + newString;
+    }
+    return newString;
+}
+
+let testStr = "1234";
+
+console.log(reverseString1(testStr));
+console.log(reverseString2(testStr));
+console.log(reverseString3(testStr));
+console.log(reverseString4(testStr));
