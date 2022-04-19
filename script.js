@@ -1,16 +1,16 @@
-function reverseString1(toReverse) { // split/join
+const reverseStringSplit = function (toReverse) {
     return toReverse.split("").reverse().join("");
 }
 
-function reverseString2(toReverse) { // recursive
+const reverseStringRecursive = function (toReverse) {
     if (toReverse === '') {
         return '';
     }
     let len = toReverse.length;
-    return toReverse[len - 1] + reverseString2(toReverse.substring(0,  len-1));
+    return toReverse[len - 1] + reverseStringRecursive(toReverse.substring(0,  len-1));
 }
 
-function reverseString3(toReverse) { // iterative #1
+const reverseStringIterative1 = function (toReverse) {
     let newString = '';
     for (let idx = toReverse.length - 1; idx >= 0; --idx) {
         newString += toReverse[idx];
@@ -18,7 +18,7 @@ function reverseString3(toReverse) { // iterative #1
     return newString;
 }
 
-function reverseString4(toReverse) { // iterative #2
+const reverseStringIterative2 = function (toReverse) {
     let newString = '';
     for (let ch of toReverse) {
         newString = ch + newString;
@@ -26,7 +26,7 @@ function reverseString4(toReverse) { // iterative #2
     return newString;
 }
 
-function reverseString5(toReverse) { // iterative #3
+const reverseStringIterative3 = function (toReverse) {
     let newString = '';
     for (let idx in toReverse) {
         newString = toReverse[idx] + newString;
@@ -34,10 +34,17 @@ function reverseString5(toReverse) { // iterative #3
     return newString;
 }
 
-let testStr = "1234";
+const reverseStringIterative4 = function (toReverse) {
+    let newStringArray = [];
+    toReverse.split('').forEach((value, i, arr) => {
+        newStringArray.splice(0, 0, value);
+    });
+    return newStringArray.join('');
+}
 
-console.log(reverseString1(testStr));
-console.log(reverseString2(testStr));
-console.log(reverseString3(testStr));
-console.log(reverseString4(testStr));
-console.log(reverseString5(testStr));
+let testStr = "12345";
+allMethods = [reverseStringSplit, reverseStringRecursive, reverseStringIterative1, reverseStringIterative2, reverseStringIterative3, reverseStringIterative4];
+
+for (method of allMethods) {
+    console.log(method(testStr));
+}
