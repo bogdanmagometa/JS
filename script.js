@@ -18,10 +18,18 @@ function reverseString3(toReverse) { // iterative #1
     return newString;
 }
 
-function reverseString4(toReverse) {
+function reverseString4(toReverse) { // iterative #2
     let newString = '';
     for (let ch of toReverse) {
         newString = ch + newString;
+    }
+    return newString;
+}
+
+function reverseString5(toReverse) { // iterative #3
+    let newString = '';
+    for (let idx in toReverse) {
+        newString = toReverse[idx] + newString;
     }
     return newString;
 }
@@ -32,3 +40,4 @@ console.log(reverseString1(testStr));
 console.log(reverseString2(testStr));
 console.log(reverseString3(testStr));
 console.log(reverseString4(testStr));
+console.log(reverseString5(testStr));
