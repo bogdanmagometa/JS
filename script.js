@@ -42,9 +42,9 @@ const reverseStringIterative4 = function (toReverse) {
     return newStringArray.join('');
 }
 
-let testStr = "12345";
-allMethods = [reverseStringSplit, reverseStringRecursive, reverseStringIterative1, reverseStringIterative2, reverseStringIterative3, reverseStringIterative4];
+const testStr = "12345";
+const allMethods = [reverseStringSplit, reverseStringRecursive, reverseStringIterative1, reverseStringIterative2, reverseStringIterative3, reverseStringIterative4];
 
-for (method of allMethods) {
+for (const method of allMethods) {
     console.log(method(testStr));
 }
