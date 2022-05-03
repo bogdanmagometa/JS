@@ -59,36 +59,34 @@ class SteakAndFries extends Dish {
 }
 
 class Kitchen {
-    constructor() {
-        this.fridge = {};
-        this.orders = [];
-        this.orderPromises = [];
-    }
+    #fridge = {};
+    #orders = [];
+    #orderPromises = [];
 
     addToFridge(ingredients) {
         for (const ingredient of ingredients) {
-            this.fridge[ingredient.name] = ingredient.count;
+            this.#fridge[ingredient.name] = ingredient.count;
         }
     }
 
     order(dish) {
-        if (!this.checkIngredientsPresent(dish.neededIngredients)) {
+        if (!this.#checkIngredientsPresent(dish.neededIngredients)) {
             throw new Error("Not enough ingridients in fridge");
         }
-        this.useIngredients(dish.neededIngredients);
-        this.orders.push(dish);
+        this.#useIngredients(dish.neededIngredients);
+        this.#orders.push(dish);
     }
 
     cookFastestOrder() {
-        this.startCookingAllOrders();
-        return Promise.race(this.orderPromises).then(([order, orderPromisesIdx]) => {
-            this.orderPromises.splice(orderPromisesIdx, 1);
+        this.#startCookingAllOrders();
+        return Promise.race(this.#orderPromises).then(([order, orderPromisesIdx]) => {
+            this.#orderPromises.splice(orderPromisesIdx, 1);
             return order;
         });
     }
 
     cookAllOrders() {
-        return Promise.all(this.orderPromises).then(pairs => {
+        return Promise.all(this.#orderPromises).then(pairs => {
             const orders = []
             for (const pair of pairs) {
                 orders.push(pair[0]);
@@ -97,29 +95,29 @@ class Kitchen {
         });
     }
 
-    checkIngredientsPresent(ingredients) {
+    #checkIngredientsPresent(ingredients) {
         for (const nam in ingredients) {
-            if (!(nam in this.fridge && this.fridge[nam] >= ingredients[nam])) {
+            if (!(nam in this.#fridge && this.#fridge[nam] >= ingredients[nam])) {
                 return false;
             }
         }
         return true;
     }
 
-    useIngredients(ingredients) {
+    #useIngredients(ingredients) {
         for (const nam in ingredients) {
-            this.fridge[nam] -= ingredients[nam];
+            this.#fridge[nam] -= ingredients[nam];
         }
     }
 
-    startCookingAllOrders() {
-        for (const order of this.orders) {
-            const orderPromisesLength = this.orderPromises.length;
-            this.orderPromises.push(order.cook().then(order => {
+    #startCookingAllOrders() {
+        for (const order of this.#orders) {
+            const orderPromisesLength = this.#orderPromises.length;
+            this.#orderPromises.push(order.cook().then(order => {
                 return [order, orderPromisesLength];
             }));
         }
-        this.orders = [];
+        this.#orders = [];
     }
 }
 
