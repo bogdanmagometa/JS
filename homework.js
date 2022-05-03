@@ -151,7 +151,7 @@ async function test() {
     try {
         kitchen.order(new SteakAndFries()); // Throws Error: Not enough ingridients in fridge
     } catch (error) {
-        console.log("Error occured!");
+        console.log(error);
     }
 }
 
