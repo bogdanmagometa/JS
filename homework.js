@@ -19,42 +19,40 @@ class Dish {
 */
 
 class Bolognese extends Dish {
+    neededIngredients = {
+        'tomato': 2,
+        'spaghetti': 1
+    };
     constructor() {
         super(10);
-        this.neededIngredients = {
-            'tomato': 2,
-            'spaghetti': 1
-        };
     }
 }
 
 class Steak extends Dish {
+    neededIngredients = {
+        'meat': 1
+    };
     constructor() {
         super(8);
-        this.neededIngredients = {
-            'meat': 1
-        };
     }
 }
 
 class MashedPotatoes extends Dish {
-
+    neededIngredients = {
+        'potato': 1
+    };
     constructor() {
         super(7);
-        this.neededIngredients = {
-            'potato': 1
-        };
     }
 }
 
 class SteakAndFries extends Dish {
-
+    neededIngredients = {
+        'meat': 1,
+        'potato': 1
+    };
     constructor() {
         super(8);
-        this.neededIngredients = {
-            'meat': 1,
-            'potato': 1
-        };
     }
 }
 
