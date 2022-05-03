@@ -76,17 +76,17 @@ class Kitchen {
         if (!this.checkIngredientsPresent(dish.ingredients)) {
             throw new Error("Not enough ingridients in fridge");
         }
-        this.useIngredients(ingredients);
+        this.useIngredients(dish.ingredients);
         this.orders.push(dish);
     }
 
     cookFastestOrder() {
         const runningOrders = this.startCookingAllOrders();
-        return Promises.race(runningOrders);
+        return Promise.race(runningOrders);
     }
 
     cookAllOrders() {
-        return Promises.all(this.runningOrders);
+        return Promise.all(this.runningOrders);
     }
 
     checkIngredientsPresent(ingredients) {
@@ -105,12 +105,12 @@ class Kitchen {
     }
 
     startCookingAllOrders() {
-        for (const order of orders) {
+        for (const order of this.orders) {
             order.cook().then(order => {
                 this.finishedOrders.push(order);
             })
         }
-        const runningOrders = orders;
+        const runningOrders = this.orders;
         this.orders = [];
         return runningOrders;
     }
