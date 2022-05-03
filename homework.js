@@ -62,8 +62,7 @@ class Kitchen {
     constructor() {
         this.fridge = {};
         this.orders = [];
-        this.finishedOrders = [];
-        this.runningOrders = [];
+        this.orderPromises = [];
     }
 
     addToFridge(ingredients) {
@@ -73,20 +72,29 @@ class Kitchen {
     }
 
     order(dish) {
-        if (!this.checkIngredientsPresent(dish.ingredients)) {
+        if (!this.checkIngredientsPresent(dish.neededIngredients)) {
             throw new Error("Not enough ingridients in fridge");
         }
-        this.useIngredients(dish.ingredients);
+        this.useIngredients(dish.neededIngredients);
         this.orders.push(dish);
     }
 
     cookFastestOrder() {
-        const runningOrders = this.startCookingAllOrders();
-        return Promise.race(runningOrders);
+        this.startCookingAllOrders();
+        return Promise.race(this.orderPromises).then(([order, orderPromisesIdx]) => {
+            this.orderPromises.splice(orderPromisesIdx, 1);
+            return order;
+        });
     }
 
     cookAllOrders() {
-        return Promise.all(this.runningOrders);
+        return Promise.all(this.orderPromises).then(pairs => {
+            const orders = []
+            for (const pair of pairs) {
+                orders.push(pair[0]);
+            }
+            return orders;
+        });
     }
 
     checkIngredientsPresent(ingredients) {
@@ -106,13 +114,12 @@ class Kitchen {
 
     startCookingAllOrders() {
         for (const order of this.orders) {
-            order.cook().then(order => {
-                this.finishedOrders.push(order);
-            })
+            const orderPromisesLength = this.orderPromises.length;
+            this.orderPromises.push(order.cook().then(order => {
+                return [order, orderPromisesLength];
+            }));
         }
-        const runningOrders = this.orders;
         this.orders = [];
-        return runningOrders;
     }
 }
 
@@ -142,10 +149,14 @@ async function test() {
 
     // Feel free to experiment with various dishes and ingridients
 
-    await kitchen.cookFastestOrder(); // Returns fastest dish to make
-    await kitchen.cookAllOrders(); // Returns two dishes in array
+    console.log(await kitchen.cookFastestOrder()); // Returns fastest dish to make
+    console.log(await kitchen.cookAllOrders()); // Returns two dishes in array
 
-    kitchen.order(new SteakAndFries()); // Throws Error: Not enough ingridients in fridge
+    try {
+        kitchen.order(new SteakAndFries()); // Throws Error: Not enough ingridients in fridge
+    } catch (error) {
+        console.log("Error occured!");
+    }
 }
 
 test();
