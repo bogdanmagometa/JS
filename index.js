@@ -16,7 +16,7 @@ function createBox() {
     return box;
 }
 
-function adjustBox(box) {
+function addEventListeners(box) {
     box.addEventListener('mousedown', event => {
         if (event.which !== LEFT_MOUSE_BUTTON) {
             return;
@@ -63,22 +63,23 @@ function adjustBox(box) {
         if (event.which === LEFT_MOUSE_BUTTON && event.altKey && numBoxes > 1) {
             --numBoxes;
             box.remove();
+        } else if (event.which === LEFT_MOUSE_BUTTON && !event.altKey) {
+            ++numBoxes;
+            let newBox = createBox();
+            addEventListeners(newBox);
+            boxContainer.appendChild(newBox);
+            let boxComputedStyles = window.getComputedStyle(box);
+            newBox.style.left = parseInt(boxComputedStyles.left, 10) + parseInt(boxComputedStyles.width, 10) + 'px';
+            newBox.style.top = parseInt(boxComputedStyles.top, 10) + parseInt(boxComputedStyles.height, 10) + 'px';
         }
     });
 }
 
 function init() {
-    boxContainer.addEventListener('dblclick', event => {
-        if (event.which === LEFT_MOUSE_BUTTON && !event.altKey) {
-            ++numBoxes;
-            let box = createBox();
-            adjustBox(box);
-            boxContainer.appendChild(box);
-        }
-    });
+
     
     let initBox = document.getElementsByClassName('box')[0];
-    adjustBox(initBox);
+    addEventListeners(initBox);
 }
 
 init();
