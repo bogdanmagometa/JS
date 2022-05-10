@@ -63,7 +63,7 @@ function addEventListeners(box) {
         if (event.which === LEFT_MOUSE_BUTTON && event.altKey && numBoxes > 1) {
             --numBoxes;
             box.remove();
-        } else if (event.which === LEFT_MOUSE_BUTTON && !event.altKey) {
+        } else if (event.which === LEFT_MOUSE_BUTTON && !event.altKey && !event.shiftKey) {
             ++numBoxes;
             let newBox = createBox();
             addEventListeners(newBox);
@@ -76,8 +76,6 @@ function addEventListeners(box) {
 }
 
 function init() {
-
-    
     let initBox = document.getElementsByClassName('box')[0];
     addEventListeners(initBox);
 }
