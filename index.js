@@ -69,8 +69,10 @@ function addEventListeners(box) {
             addEventListeners(newBox);
             boxContainer.appendChild(newBox);
             let boxComputedStyles = window.getComputedStyle(box);
-            newBox.style.left = parseInt(boxComputedStyles.left, 10) + parseInt(boxComputedStyles.width, 10) + 'px';
-            newBox.style.top = parseInt(boxComputedStyles.top, 10) + parseInt(boxComputedStyles.height, 10) + 'px';
+            newBox.style.left = parseInt(boxComputedStyles.left, 10) + 
+                                            parseInt(boxComputedStyles.width, 10) + 'px';
+            newBox.style.top = parseInt(boxComputedStyles.top, 10) + 
+                                            parseInt(boxComputedStyles.height, 10) + 'px';
         }
     });
 }
