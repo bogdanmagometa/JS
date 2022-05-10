@@ -17,33 +17,33 @@ function createBox() {
 }
 
 function adjustBox(box) {
-    function mouseDownHandler(event) {
-        if (event.which === LEFT_MOUSE_BUTTON) {
-            let offsetX = event.clientX - parseInt(window.getComputedStyle(box).left, 10);
-            let offsetY = event.clientY - parseInt(window.getComputedStyle(box).top, 10);
-        
-            function mouseUpHandler(event) {
-                if (event.which !== LEFT_MOUSE_BUTTON) {
-                    return;
-                }
-                boxContainer.removeEventListener('mousemove', mouseMoveHandler);
-                boxContainer.removeEventListener('mouseup', mouseUpHandler);
-            }
-            
-            function mouseMoveHandler(event) {
-                if (event.which !== LEFT_MOUSE_BUTTON) {
-                    return;
-                }
-                box.style.top = (event.clientY - offsetY) + 'px';
-                box.style.left = (event.clientX - offsetX) + 'px';
-            }
-    
-            boxContainer.addEventListener('mouseup', mouseUpHandler);
-            boxContainer.addEventListener('mousemove', mouseMoveHandler);    
+    box.addEventListener('mousedown', event => {
+        if (event.which !== LEFT_MOUSE_BUTTON) {
+            return;
         }
-    }
+        let offsetX = event.clientX - parseInt(window.getComputedStyle(box).left, 10);
+        let offsetY = event.clientY - parseInt(window.getComputedStyle(box).top, 10);
+    
+        function mouseUpHandler(event) {
+            if (event.which !== LEFT_MOUSE_BUTTON) {
+                return;
+            }
+            boxContainer.removeEventListener('mousemove', mouseMoveHandler);
+            boxContainer.removeEventListener('mouseup', mouseUpHandler);
+        }
+        
+        function mouseMoveHandler(event) {
+            if (event.which !== LEFT_MOUSE_BUTTON) {
+                return;
+            }
+            box.style.top = (event.clientY - offsetY) + 'px';
+            box.style.left = (event.clientX - offsetX) + 'px';
+        }
 
-    box.addEventListener('mousedown', mouseDownHandler);
+        boxContainer.addEventListener('mouseup', mouseUpHandler);
+        boxContainer.addEventListener('mousemove', mouseMoveHandler);
+    });
+
     box.addEventListener('contextmenu', event => {
         event.preventDefault();
         if (event.which === RIGHT_MOUSE_BUTTON) {
@@ -51,12 +51,14 @@ function adjustBox(box) {
             box.style.backgroundColor = '#' + randomColor.toString();
         }
     });
+
     box.addEventListener('click', event => {
         if (event.which === LEFT_MOUSE_BUTTON && event.shiftKey) {
             box.classList.toggle('box-large');
             return;
         }
     });
+
     box.addEventListener('dblclick', event => {
         if (event.which === LEFT_MOUSE_BUTTON && event.altKey && numBoxes > 1) {
             --numBoxes;
@@ -65,16 +67,19 @@ function adjustBox(box) {
     });
 }
 
-boxContainer.addEventListener('dblclick', event => {
-    if (event.which === LEFT_MOUSE_BUTTON && event.target == boxContainer) {
-        ++numBoxes;
-        let box = createBox();
-        adjustBox(box);
-        boxContainer.appendChild(box);
-    }
-});
+function init() {
+    boxContainer.addEventListener('dblclick', event => {
+        if (event.which === LEFT_MOUSE_BUTTON && !event.altKey) {
+            ++numBoxes;
+            let box = createBox();
+            adjustBox(box);
+            boxContainer.appendChild(box);
+        }
+    });
+    
+    let initBox = document.getElementsByClassName('box')[0];
+    adjustBox(initBox);
+}
 
-let initBox = document.getElementsByClassName('box')[0];
-adjustBox(initBox);
-
+init();
 
