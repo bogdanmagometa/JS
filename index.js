@@ -23,7 +23,7 @@ function addEventListeners(box) {
         }
         let offsetX = event.clientX - parseInt(window.getComputedStyle(box).left, 10);
         let offsetY = event.clientY - parseInt(window.getComputedStyle(box).top, 10);
-    
+
         function mouseUpHandler(event) {
             if (event.which !== LEFT_MOUSE_BUTTON) {
                 return;
@@ -31,7 +31,7 @@ function addEventListeners(box) {
             boxContainer.removeEventListener('mousemove', mouseMoveHandler);
             boxContainer.removeEventListener('mouseup', mouseUpHandler);
         }
-        
+
         function mouseMoveHandler(event) {
             if (event.which !== LEFT_MOUSE_BUTTON) {
                 return;
@@ -47,7 +47,7 @@ function addEventListeners(box) {
     box.addEventListener('contextmenu', event => {
         event.preventDefault();
         if (event.which === RIGHT_MOUSE_BUTTON) {
-            let randomColor = Math.floor(Math.random() * 2**(8*3)).toString(16);
+            let randomColor = Math.floor(Math.random() * 2 ** (8 * 3)).toString(16);
             box.style.backgroundColor = '#' + randomColor.toString();
         }
     });
@@ -81,4 +81,3 @@ function init() {
 }
 
 init();
-
